@@ -1,0 +1,14 @@
+{
+  "name": "jest-env-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Maxim Odorodko <modorodko@it-one.ru>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.4.5"
+  },
+  "scripts": {
+    "test": "jest",
+    "test::watch": "jest --watch"
+  }
+}
