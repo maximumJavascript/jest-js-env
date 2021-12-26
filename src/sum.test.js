@@ -1,4 +1,4 @@
-const sum = require('./index');
+const sum = require('./sum');
 
 describe('функция суммы', () => {
     test('работает как задумано', () => {
