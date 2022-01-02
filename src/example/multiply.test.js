@@ -1,4 +1,4 @@
-const multiply = require('./multiply');
+import multiply from './multiply';
 
 describe('функция умножения', () => {
     test('работает как задумано', () => {
