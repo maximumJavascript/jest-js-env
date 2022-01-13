@@ -5,18 +5,47 @@
 import { ForestBeast, HairedForestBeast, HairedForestBeastWithFamily } from "./codebase";
 
 const constructForestBeastInstance = (child, parent) => {
-	child.name = parent.name;
-	child.countOfLimbs = parent.countOfLimbs;
-	child.geneticData = parent.geneticData;
-	child.id = parent.id;
+	Object.defineProperties(child, {
+		countOfLimbs: {
+			value: parent.countOfLimbs,
+			enumerable: true,
+		},
+		name: {
+			value: parent.name,
+			enumerable: true,
+		},
+		geneticData: {
+			value: null,
+			enumerable: true,
+		},
+		id: {
+			value: parent.id,
+		}
+	})
 }
 
 const constructHairedForestBeastInstance = (child, parent) => {
-	child.name = parent.name;
-	child.countOfLimbs = parent.countOfLimbs;
-	child.hasHair = parent.hasHair;
-	child.isSocial = parent.isSocial;
-	child.id = parent.id;
+	Object.defineProperties(child, {
+		countOfLimbs: {
+			value: parent.countOfLimbs,
+			enumerable: true,
+		},
+		name: {
+			value: parent.name,
+			enumerable: true,
+		},
+		id: {
+			value: parent.id,
+		},
+		hasHair: {
+			value: parent.hasHair,
+			enumerable: true,
+		},
+		isSocial: {
+			value: parent.isSocial,
+			enumerable: true,
+		}
+	})
 }
 
 export default function serializeClassInstanceData(instance) {
