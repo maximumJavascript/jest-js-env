@@ -48,16 +48,16 @@ const constructHairedForestBeastInstance = (child, parent) => {
 	})
 }
 
-export default function serializeClassInstanceData(instance) {
+const serializeClassInstanceData = (instance) => {
 
 	if (instance.constructor === ForestBeast) {
-		let obj = Object.create(Object.prototype);
+		const obj = Object.create(Object.prototype);
 		constructForestBeastInstance(obj, instance);
 		return obj;
 	}
 
 	if (instance.constructor === HairedForestBeast) {
-		let obj = Object.create(Object.prototype);
+		const obj = Object.create(Object.prototype);
 		constructHairedForestBeastInstance(obj, instance);
 		return obj;
 	}
@@ -67,10 +67,12 @@ export default function serializeClassInstanceData(instance) {
 		const family = instance.family;
 		obj.family = [];
 		for (let i = 0; i < family.length; i++) {
-			let member = Object.create(Object.prototype);
+			const member = Object.create(Object.prototype);
 			constructHairedForestBeastInstance(member, family[i]);
 			obj.family.push(member);
 		}
 		return obj;
 	}
 }
+
+export default serializeClassInstanceData;
