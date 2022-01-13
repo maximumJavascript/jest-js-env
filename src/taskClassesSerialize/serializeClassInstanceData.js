@@ -21,7 +21,7 @@ const constructForestBeastInstance = (child, parent) => {
 		id: {
 			value: parent.id,
 		}
-	})
+	});
 }
 
 const constructHairedForestBeastInstance = (child, parent) => {
@@ -45,7 +45,7 @@ const constructHairedForestBeastInstance = (child, parent) => {
 			value: parent.isSocial,
 			enumerable: true,
 		}
-	})
+	});
 }
 
 const serializeClassInstanceData = (instance) => {
