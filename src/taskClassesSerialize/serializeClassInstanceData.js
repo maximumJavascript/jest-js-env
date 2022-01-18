@@ -3,27 +3,26 @@
  * @returns plain object
  */
 
-import {ForestBeast, HairedForestBeast, HairedForestBeastWithFamily} from "./codebase";
-
-const constructAnyInstance = (descs) => {
+const constructAnyInstance = (descs, parent) => {
     const obj = Object.create(Object.prototype);
 
-    for(let [key, value] of Object.entries(descs)){
-        // if(value.get){
-        //     obj[key] = value.get();
-        // }
-        //TODO: разобраться, какие свойства нужны, а также, что у них общего
-        console.log(key, value);
+    for (let [key, value] of Object.entries(descs)) {
+
+        if (value.get && value.get.call(parent) !== undefined) {
+            Object.defineProperty(obj, key, {
+                value: value.get.call(parent),
+                enumerable: true,
+            });
+        }
     }
     return obj;
 }
 
 const serializeClassInstanceData = (instance) => {
-    // console.log(instance.name)
-    // console.log(Object.getPrototypeOf(instance));
+
     const descriptors = Object.getOwnPropertyDescriptors(instance.constructor.prototype);
     // console.log(Object.getOwnPropertyNames(instance.constructor.prototype));
-    console.log(constructAnyInstance(descriptors));
+    return constructAnyInstance(descriptors, instance);
 }
 
 export default serializeClassInstanceData;
