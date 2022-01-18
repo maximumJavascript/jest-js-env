@@ -19,9 +19,7 @@ const constructAnyInstance = (descs, parent) => {
 }
 
 const serializeClassInstanceData = (instance) => {
-
     const descriptors = Object.getOwnPropertyDescriptors(instance.constructor.prototype);
-    // console.log(Object.getOwnPropertyNames(instance.constructor.prototype));
     return constructAnyInstance(descriptors, instance);
 }
 
