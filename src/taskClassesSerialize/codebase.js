@@ -3,6 +3,7 @@ export class ForestBeast {
 		this._countOfLimbs = countOfLimbs;
 		this._name = name;
 		this._uuid = uuid || this.regenerateId();
+		this.kind = 'Forest Beast';
 	}
 
 	get name() {

@@ -14,6 +14,7 @@ describe('function ', () => {
 		});
 
 		// private fields should not be copied
+		expect(result.kind).toBeDefined();
 		expect(result.isSocial).toBe(undefined);
 		expect(result._countOfLimbs).toBe(undefined);
 		expect(result._name).toBe(undefined);
