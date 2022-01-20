@@ -1,33 +1,38 @@
 /**
  * @param instance class instance to serialize
+ * @param original
  * @returns plain object
  */
 
-const serializeClassInstanceData = (instance) => {
+const serializeClassInstanceData = (instance, original = instance) => {
 
-    const instanceConstructor = instance.constructor;
-    const descriptors = Object.getOwnPropertyDescriptors(instanceConstructor.prototype);
-    const constructorProto = Object.getPrototypeOf(instanceConstructor);
-    const descriptors2 = Object.getOwnPropertyDescriptors(constructorProto.prototype)
-
+    const instanceProto = Object.getPrototypeOf(instance);
     const obj = Object.create(Object.prototype);
 
-    for (const [key, value] of Object.entries(descriptors)) {
-        if (value.get && value.get.call(instance) !== undefined) {
-            Object.defineProperty(obj, key, {
-                value: value.get.call(instance),
-                enumerable: true,
-                configurable: true,
-            });
-        }
+    if (instanceProto.constructor !== Object.prototype.constructor) {
+        Object.assign(obj, serializeClassInstanceData(instanceProto, instance));
+    } else {
+        return obj;
     }
-    if (instance instanceof constructorProto) {
-        for (const [key, value] of Object.entries(descriptors2)) {
-            if (value.get && (value.get.call(instance) !== undefined) && (!obj[key])) {
-                Object.defineProperty(obj, key, {
-                    value: value.get.call(instance),
-                    enumerable: true,
-                });
+
+    const descriptors = Object.getOwnPropertyDescriptors(instanceProto);
+
+    for (const [key, descriptor] of Object.entries(descriptors)) {
+        if (descriptor.get) {
+            const value = descriptor.get.call(original);
+
+            if (Array.isArray(value)) {
+                obj[key] = [];
+
+                for (const elem of value) {
+                    if (elem instanceof Object) {
+                        obj[key].push(serializeClassInstanceData(elem));
+                    } else {
+                        (typeof elem !== 'undefined') && (obj[key].push(elem));
+                    }
+                }
+            } else {
+                (typeof value !== 'undefined') && (obj[key] = value);
             }
         }
     }
