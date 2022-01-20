@@ -4,7 +4,7 @@ const PromiseState = {
 	Rejected: 'REJECTED',
 }
 
-class MyPromise {
+export default class MyPromise {
 	constructor(callback) {
 		this.state = PromiseState.Pending;
 	}

@@ -1,10 +1,10 @@
-import { serializeClassInstanceData, ForestBeast, HairedForestBeast, HairedForestBeastWithFamily } from './index';
+import { serializeClassInstance, ForestBeast, HairedForestBeast, HairedForestBeastWithFamily } from './index';
 
 describe('function ', () => {
 	test('works correctly for basic usage', () => {
 		const params = { name: 'wolf', countOfLimbs: 4, isSocial: true, uuid: Math.random() };
 		const wolf = new ForestBeast(params);
-		const result = serializeClassInstanceData(wolf);
+		const result = serializeClassInstance(wolf);
 		const stringified = JSON.stringify(result);
 
 		expect(result).toMatchObject({
@@ -32,7 +32,7 @@ describe('function ', () => {
 	test('works correctly with class inheritance', () => {
 		const params = { name: 'wolf', countOfLimbs: 4, isSocial: true, uuid: Math.random() };
 		const wolf = new HairedForestBeast(params);
-		const result = serializeClassInstanceData(wolf);
+		const result = serializeClassInstance(wolf);
 		const stringified = JSON.stringify(result);
 
 		expect(result).toMatchObject({
@@ -68,7 +68,7 @@ describe('function ', () => {
 			]
 		});
 
-		const result = serializeClassInstanceData(wolf);
+		const result = serializeClassInstance(wolf);
 		const stringified = JSON.stringify(result);
 
 		expect(JSON.parse(stringified)).toMatchObject(result);
