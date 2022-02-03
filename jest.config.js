@@ -1,9 +1,5 @@
-const config = {
-	verbose: true,
-	transform: {
-		"^.+\\.[t|j]sx?$": "babel-jest"
-	},
-	setupFilesAfterEnv: ['./setupTests.js']
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+module.exports = {
+  preset: 'ts-jest/presets/js-with-ts',
+  testEnvironment: 'node',
 };
-
-module.exports = config;
