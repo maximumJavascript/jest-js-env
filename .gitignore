@@ -1,3 +1,4 @@
 node_modules
 .idea
 src/**/hiddenSolution.js
+src/tasksMaps/factorial/hiddenSolution.ts

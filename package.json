@@ -4,16 +4,20 @@
   "main": "index.js",
   "author": "Maxim Odorodko <modorodko@it-one.ru>",
   "license": "MIT",
+  "type": "module",
   "devDependencies": {
     "@babel/preset-env": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@types/jest": "^27.4.0",
     "babel-jest": "^27.4.5",
     "jest": "^27.4.7",
+    "node-fetch": "^3.2.0",
     "regenerator-runtime": "^0.13.9",
-    "ts-jest": "^27.1.3"
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.4.0"
   },
   "scripts": {
+    "run::ts-node": "ts-node -P ./tsconfig.json src/tasksMaps/articles/articles.js",
     "test": "jest",
     "test::watch": "jest --watch"
   },
