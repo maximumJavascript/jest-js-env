@@ -4,7 +4,8 @@ import fetch from 'node-fetch';
 // you are going to research how the code you write works and think about getting better solution
 //
 // there is no right answer, just recommendation and suggestion steps
-// to done it: after every line you need to think or to do what you have been suggested, and only after that go to next line
+// to done it: after every line you need to think or to do what you have been suggested, and only
+// after that go to next line
 
 // NOTE: what I expect in your PR on github:
 // 0. Working with english language requirements (so I wrote everything on english)
@@ -17,33 +18,74 @@ import fetch from 'node-fetch';
 //	2.1 sort immutable by updatedDate in non-ascending order
 //  2.3 create data structure to show other news by every news item: it will be Map where
 //  	keys will be these objects
-//		values will be all objects with the same newsSite property value, but not including key object - use any structure you want
-// 	2.4 create function (or class) to add new value to this data structure:
-//		if Map already has that object as key, do nothing
-//		if Map does not have that object as key, but has another object with same id, update object in map with new object
-//  	if we're adding completely new object - update collection properly
-//  	try to write tests (check file articles.test.js) to check that it works correctly (NOTE: do NOT perform any requests in your tests, use fallbackData)
-// 	2.5 change Map to WeakMap
+//		values will be all objects with the same newsSite property value, but not including key
+// 		object - use any structure you want
+// 2.4 create function (or class) to add new value to this data
+// structure:
+// 	if Map already has that object as key, do nothing
+// 	if Map does not have that object as key,
+// 		but has another object with same id, update object in map with new object
+// if we're adding completely new object - update collection properly try to write tests
+// (check file articles.test.js) to check that it works correctly (NOTE: do NOT perform any
+// requests in your tests, use fallbackData)
+// 2.5 change Map to WeakMap
 // 		can your code still work?
-// 		Try to make it work by adding any non-weak data-structure you want to store data in and use WeakMap just for association between objects, not for data store
-//		(you want to get map association structure with auto-cleanable keys (because it is WeakMap) and your non-weak data store you write and change values)
-//		Think: keys are cleaning, but objects in value don't.
-//			Can you use WeakSet's as values to fix this issue? Does using WeakSet as values of WeakMap makes sense or not? Can you get associated data with it by key?
-//			Maybe you just don't need to store values as objects in you Map at all?
-//				Write function to get object by id in your non-weak data store and stop storing object in your map values - store just ids,
-//					so objects can be garbage-collected if you remove it from data store
-//				adapt your tests to work with final solution
+// Try to make it work by adding any non-weak data-structure you want to store data in and use
+// 		WeakMap just for association between objects, not for data store (you want to get map
+// 		association structure with auto-cleanable keys (because it is WeakMap) and your non-weak
+// data store you write and change values) Think: keys are cleaning, but objects in value don't.
+// Can you use WeakSet's as values to fix this issue? Does using WeakSet as values of WeakMap makes
+// sense or not? Can you get associated data with it by key? Maybe you just don't need to store
+// values as objects in you Map at all? Write function to get object by id in your non-weak data
+// store and stop storing object in your map values - - store just ids, so objects can be
+// garbage-collected if you remove it from data store adapt your tests to work with final solution
 
-(async () => {
+(async() => {
 	let result;
 	try {
-		result = await fetch('https://api.spaceflightnewsapi.net/v3/articles').then(x => x.json());
+		// Task 2.1
+		const compareByUpdatedData = (first, second) => {
+			if (Date.parse(first.updatedAt) < Date.parse(second.updatedAt)) {
+				return 1;
+			}
+			if (Date.parse(first.updatedAt) > Date.parse(second.updatedAt)) {
+				return -1;
+			}
+			return 0;
+		}
+
+		result = await fetch('https://api.spaceflightnewsapi.net/v3/articles')
+			.then(x => x.json());
+		const sortedResult = result.slice().sort(compareByUpdatedData); // array
+		// console.log(sortedResult);
+		// End of 2.1
+
+		// Task 2.3
+		const mapByNewsSite = new Map();
+
+		for (let i = 0; i < sortedResult.length; i++) {
+			const newsSite = sortedResult[i].newsSite;
+			const id = sortedResult[i].id;
+			// All objects that have the same newsSite prop except the key-object
+			const arrayOfObjects = sortedResult.filter((elem) => elem.id !== id && elem.newsSite === newsSite);
+
+			// Check for already having object as a key with newsSite prop
+			for (let k = 0; k < sortedResult.length; k++) {
+				if (mapByNewsSite.get(sortedResult[k]) && sortedResult[k].newsSite === newsSite) {
+					mapByNewsSite.delete(sortedResult[k]);
+				}
+			}
+			mapByNewsSite.set(sortedResult[i], arrayOfObjects);
+		}
+
+		console.log(mapByNewsSite);
+
 	} catch (e) {
 		console.error(e);
 	}
 
 	// TODO
-	console.log(result);
+	// console.log(result);
 })();
 
 
