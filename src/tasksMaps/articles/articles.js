@@ -63,22 +63,15 @@ import fetch from 'node-fetch';
 		// Task 2.3
 		const mapByNewsSite = new Map();
 
-		for (let i = 0; i < sortedResult.length; i++) {
-			const newsSite = sortedResult[i].newsSite;
-			const id = sortedResult[i].id;
-			const arrayOfObjects = [];
-
-			for (let k = 0; k < sortedResult.length; k++) {
-				if (sortedResult[k].newsSite === newsSite && sortedResult[k].id !== id) {
-					arrayOfObjects.push(sortedResult[k]);
-				}
-			}
+		for (let k = 0; k < sortedResult.length; k++) {
+			const newsSite = sortedResult[k].newsSite;
+			const arrayOfObjects = sortedResult.filter((elem, index) => {
+				return elem.newsSite === newsSite && k !== index;
+			});
 			mapByNewsSite.set(newsSite, arrayOfObjects);
 		}
 
-
 		console.log(mapByNewsSite);
-
 	} catch (e) {
 		console.error(e);
 	}
