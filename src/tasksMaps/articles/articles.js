@@ -66,17 +66,16 @@ import fetch from 'node-fetch';
 		for (let i = 0; i < sortedResult.length; i++) {
 			const newsSite = sortedResult[i].newsSite;
 			const id = sortedResult[i].id;
-			// All objects that have the same newsSite prop except the key-object
-			const arrayOfObjects = sortedResult.filter((elem) => elem.id !== id && elem.newsSite === newsSite);
+			const arrayOfObjects = [];
 
-			// Check for already having object as a key with newsSite prop
 			for (let k = 0; k < sortedResult.length; k++) {
-				if (mapByNewsSite.get(sortedResult[k]) && sortedResult[k].newsSite === newsSite) {
-					mapByNewsSite.delete(sortedResult[k]);
+				if (sortedResult[k].newsSite === newsSite && sortedResult[k].id !== id) {
+					arrayOfObjects.push(sortedResult[k]);
 				}
 			}
-			mapByNewsSite.set(sortedResult[i], arrayOfObjects);
+			mapByNewsSite.set(newsSite, arrayOfObjects);
 		}
+
 
 		console.log(mapByNewsSite);
 
