@@ -19,7 +19,7 @@ new MyPromise(res => window.setTimeout(res, 1000))
 			script.onerror = rej;
 		});
 	})
-	// loading zopa - expect to throw
+	// loading script with wrong url - expect to throw
 	.then(() => {
 		iMustBecameThree++;
 
@@ -38,7 +38,7 @@ new MyPromise(res => window.setTimeout(res, 1000))
 		iAmAlwaysZero = 1;
 	})
 	// expect this to be called
-	.catch(function ass() {
+	.catch(() => {
 		iMustBecameThree++;
 
 		console.log('must be 0 =', iAmAlwaysZero);
