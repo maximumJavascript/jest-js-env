@@ -25,7 +25,8 @@ import fetch from 'node-fetch';
 // 	if Map already has that object as key, do nothing
 // 	if Map does not have that object as key,
 // 		but has another object with same id, update object in map with new object
-// if we're adding completely new object - update collection properly try to write tests
+// if we're adding completely new object - update collection properly
+// try to write tests
 // (check file articles.test.js) to check that it works correctly (NOTE: do NOT perform any
 // requests in your tests, use fallbackData)
 // 2.5 change Map to WeakMap
@@ -45,39 +46,70 @@ import fetch from 'node-fetch';
 	try {
 		// Task 2.1
 		const compareByUpdatedData = (first, second) => {
-			if (Date.parse(first.updatedAt) < Date.parse(second.updatedAt)) {
-				return 1;
-			}
-			if (Date.parse(first.updatedAt) > Date.parse(second.updatedAt)) {
-				return -1;
-			}
-			return 0;
+			return Date.parse(first.updatedAt) < Date.parse(second.updatedAt);
 		}
-
 		result = await fetch('https://api.spaceflightnewsapi.net/v3/articles')
 			.then(x => x.json());
 		const sortedResult = result.slice().sort(compareByUpdatedData); // array
-		// console.log(sortedResult);
 		// End of 2.1
 
 		// Task 2.3
 		const mapByNewsSite = new Map();
+		const resultMap = new Map();
 
 		for (let k = 0; k < sortedResult.length; k++) {
 			const newsSite = sortedResult[k].newsSite;
-			const arrayOfObjects = sortedResult.filter((elem, index) => {
-				return elem.newsSite === newsSite && k !== index;
-			});
-			mapByNewsSite.set(newsSite, arrayOfObjects);
+			const arrayOfObjects = mapByNewsSite.get(newsSite);
+
+			if (!arrayOfObjects) {
+				mapByNewsSite.set(newsSite, [sortedResult[k]]);
+			} else {
+				arrayOfObjects.push(sortedResult[k]);
+			}
 		}
 
-		console.log(mapByNewsSite);
+		for (const arrayOfValues of mapByNewsSite.values()) {
+			resultMap.set(arrayOfValues[0], arrayOfValues.slice(1));
+		}
+		// !!! Test
+		const testObj = {
+			// id from the first item of resultMap to test checkForIdCollision function
+			id: 13906,
+			title: 'Denis Baranov had slept'
+		}
+		// !!! Test
+
+		//End of 2.3
+
+		// Task 2.4
+		const checkForIdCollision = (values, newObject) => {
+			let isRepeatable = false;
+			for (const arrayOfObjects of values) {
+				for (const object of arrayOfObjects) {
+					if (object.id === newObject.id) {
+						isRepeatable = true;
+						Object.assign(object, newObject);
+					}
+				}
+			}
+			return isRepeatable;
+		}
+		const addData = (object) => {
+			if (resultMap.has(object)) {
+				return;
+			} else if (!resultMap.has(object)) {
+				const viewed = checkForIdCollision(resultMap.values(), object);
+				if (!viewed) {
+					resultMap.set(object, []);
+				}
+			}
+		}
+		// Change testObj's id to compare results
+		addData(testObj);
+		console.log(resultMap);
 	} catch (e) {
 		console.error(e);
 	}
-
-	// TODO
-	// console.log(result);
 })();
 
 
