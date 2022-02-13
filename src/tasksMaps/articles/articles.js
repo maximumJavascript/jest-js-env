@@ -45,6 +45,8 @@ import fetch from 'node-fetch';
 	let result;
 	try {
 		// Task 2.1
+		// Callback function in sort method of an Array.prototype
+		// to arrange items in array into non-ascending order
 		const compareByUpdatedData = (first, second) => {
 			return Date.parse(first.updatedAt) < Date.parse(second.updatedAt);
 		}
@@ -54,7 +56,10 @@ import fetch from 'node-fetch';
 		// End of 2.1
 
 		// Task 2.3
+		// There are two Maps.
+		// The first one have to arrange objects by string-key equals "newsSite".
 		const mapByNewsSite = new Map();
+		// The second one must resolve an issue above.
 		const resultMap = new Map();
 
 		for (let k = 0; k < sortedResult.length; k++) {
@@ -68,13 +73,19 @@ import fetch from 'node-fetch';
 			}
 		}
 
-		for (const arrayOfValues of mapByNewsSite.values()) {
-			resultMap.set(arrayOfValues[0], arrayOfValues.slice(1));
+		// There is O(n^2), bruh...
+		for (const array of mapByNewsSite.values()) {
+			for (let i = 0; i < array.length; i++) {
+				const mainObj = array[i];
+				resultMap.set(mainObj, array.filter((elem) => {
+					return elem.id !== mainObj.id;
+				}))
+			}
 		}
 		// !!! Test
 		const testObj = {
 			// id from the first item of resultMap to test checkForIdCollision function
-			id: 13906,
+			id: 13926,
 			title: 'Denis Baranov had slept'
 		}
 		// !!! Test
@@ -82,29 +93,31 @@ import fetch from 'node-fetch';
 		//End of 2.3
 
 		// Task 2.4
-		const checkForIdCollision = (values, newObject) => {
+		// There are two functions.
+		// addData function determines how to add new object to resultMap.
+		// checkForIdCollision determines what object it will update with objToAdd.
+		const checkForIdCollision = (objToAdd, parentObj) => {
 			let isRepeatable = false;
-			for (const arrayOfObjects of values) {
-				for (const object of arrayOfObjects) {
-					if (object.id === newObject.id) {
+			parentObj.forEach((elem) => {
+				for (let i = 0; i < elem.length; i++) {
+					if (elem[i].id === objToAdd.id) {
 						isRepeatable = true;
-						Object.assign(object, newObject);
+						Object.assign(elem[i], objToAdd);
 					}
 				}
-			}
+			});
 			return isRepeatable;
 		}
-		const addData = (object) => {
-			if (resultMap.has(object)) {
-				return;
-			} else if (!resultMap.has(object)) {
-				const viewed = checkForIdCollision(resultMap.values(), object);
-				if (!viewed) {
-					resultMap.set(object, []);
+
+		const addData = (objToAdd) => {
+			if (resultMap.has(objToAdd)) return;
+			else {
+				const repeating = checkForIdCollision(objToAdd, resultMap);
+				if (!repeating) {
+					resultMap.set(objToAdd, []);
 				}
 			}
 		}
-		// Change testObj's id to compare results
 		addData(testObj);
 		console.log(resultMap);
 	} catch (e) {
