@@ -52,7 +52,7 @@ import fetch from 'node-fetch';
 		}
 		result = await fetch('https://api.spaceflightnewsapi.net/v3/articles')
 			.then(x => x.json());
-		const sortedResult = result.slice().sort(compareByUpdatedData); // array
+		const sortedResult = result.slice().sort(compareByUpdatedData);
 		// End of 2.1
 
 		// Task 2.3
@@ -82,14 +82,6 @@ import fetch from 'node-fetch';
 				}))
 			}
 		}
-		// !!! Test
-		const testObj = {
-			// id from the first item of resultMap to test checkForIdCollision function
-			id: 13926,
-			title: 'Denis Baranov had slept'
-		}
-		// !!! Test
-
 		//End of 2.3
 
 		// Task 2.4
@@ -119,7 +111,6 @@ import fetch from 'node-fetch';
 			}
 		}
 		addData(testObj);
-		console.log(resultMap);
 	} catch (e) {
 		console.error(e);
 	}
