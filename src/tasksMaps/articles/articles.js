@@ -73,7 +73,6 @@ import fetch from 'node-fetch';
 			}
 		}
 
-		// There is O(n^2), bruh...
 		for (const array of mapByNewsSite.values()) {
 			for (let i = 0; i < array.length; i++) {
 				const mainObj = array[i];
@@ -84,6 +83,11 @@ import fetch from 'node-fetch';
 		}
 		//End of 2.3
 
+		// Test
+		const testObj = {
+			id: 13926,
+			title: "Maxis had bought zopa cos he's a programmer"
+		}
 		// Task 2.4
 		// There are two functions.
 		// addData function determines how to add new object to resultMap.
@@ -102,7 +106,7 @@ import fetch from 'node-fetch';
 		}
 
 		const addData = (objToAdd) => {
-			if (resultMap.has(objToAdd)) return;
+			if (resultMap.has(objToAdd)) return void 0;
 			else {
 				const repeating = checkForIdCollision(objToAdd, resultMap);
 				if (!repeating) {
@@ -111,6 +115,7 @@ import fetch from 'node-fetch';
 			}
 		}
 		addData(testObj);
+		console.log(resultMap);
 	} catch (e) {
 		console.error(e);
 	}
