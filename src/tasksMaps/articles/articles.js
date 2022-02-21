@@ -25,11 +25,11 @@ import fetch from 'node-fetch';
 //  	try to write tests (check file articles.test.js) to check that it works correctly (NOTE: do NOT perform any requests in your tests, use fallbackData)
 // 	2.5 change Map to WeakMap
 // 		can your code still work?
-// 		Try to make it work by adding any non-weak data-structure you want to store data in and use WeakMap just for association between objects, not for data store
+// 		Try to make it wok by adding any non-weak data-structure you want to store data in and use WeakMap just for association between objects, not for data store
 //		(you want to get map association structure with auto-cleanable keys (because it is WeakMap) and your non-weak data store you write and change values)
 //		Think: keys are cleaning, but objects in value don't.
 //			Can you use WeakSet's as values to fix this issue? Does using WeakSet as values of WeakMap makes sense or not? Can you get associated data with it by key?
-//			Maybe you just don't need to store values as objects in you Map at all?
+//			Maybe you just don't need to store values as objects in your Map at all?
 //				Write function to get object by id in your non-weak data store and stop storing object in your map values - store just ids,
 //					so objects can be garbage-collected if you remove it from data store
 //				adapt your tests to work with final solution
